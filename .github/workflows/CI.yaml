@@ -17,23 +17,25 @@ jobs:
         with:
           command: fmt
           args: --all -- --check
-          
+
   test:
     name: CI
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
+      - name: Run Tests
+        uses: actions-rs/cargo@v1
         with:
           command: test
       - name: Clippy
-      - uses: actions-rs/clippy-check@v1
+        uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: -- -D warnings
