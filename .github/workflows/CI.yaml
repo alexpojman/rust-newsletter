@@ -24,11 +24,9 @@ jobs:
         continue-on-error: false
         with:
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/            
+            ~/.cargo/registry
+            ~/.cargo/git
+            target          
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
       - name: Fmt
@@ -36,6 +34,11 @@ jobs:
         with:
           command: fmt
           args: --all -- --check
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
       - name: Clippy
         uses: actions-rs/clippy-check@v1
         with:
@@ -45,7 +48,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-      - name: Code Coverage
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          args: '--ignore-tests'
+      # - name: Code Coverage
+      #   uses: actions-rs/tarpaulin@v0.1
+      #   with:
+      #     args: '--ignore-tests'
