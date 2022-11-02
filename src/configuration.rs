@@ -17,7 +17,7 @@ pub struct DatabaseSettings {
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let mut settings = config::Config::default();
-
+  
     settings.merge(config::File::with_name("configuration"))?;
 
     // Try to convert the configration values into Settings type
@@ -27,8 +27,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
 impl DatabaseSettings {
     pub fn connection_string(&self) -> String {
         format!(
-            "postgres://{}:{}@{}:{}/{}",
-            self.username, self.password, self.host, self.port, self.database_name
+            "postgres://{}:{}@{}:{}/{}", self.username, self.password, self.host, self.port, self.database_name
         )
     }
 
